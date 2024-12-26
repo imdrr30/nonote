@@ -32,12 +32,8 @@ export class ModalComponent {
   }
 
   submitInput(): void {
-    if (this.userInput.trim()) {
-      this.inputSubmitted.emit(this.userInput);
-      this.closeModal();
-    } else {
-      alert('Please enter a value.');
-    }
+    this.inputSubmitted.emit(this.userInput);
+    this.closeModal();
   }
 
   onKeyDown(event: KeyboardEvent): void {

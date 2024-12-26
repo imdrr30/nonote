@@ -153,6 +153,7 @@ export class NonoteComponent implements AfterViewInit {
           event.target.className.includes("ck-button")
           || event.target.className.includes("ck-toolbar")
           || event.target.className.includes("ck-word-count")
+          || event.target.className.includes("move")
         )
       ){
 

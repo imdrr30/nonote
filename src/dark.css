@@ -11,6 +11,10 @@
     .ck.ck-editor__main > .ck-editor__editable {
         background-color: #212529;
     }
+
+    .move-btn{
+        background-color: rgba(240, 248, 255, 0.127);
+    }
 }
 
 [data-bs-theme=light]{

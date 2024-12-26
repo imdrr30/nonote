@@ -292,17 +292,11 @@ export class EditorComponent implements AfterViewInit {
 	}
 
 	editorFocus(){
-		let ckeditor: any = this.ckeditor;
-		let toolBar = ckeditor.elementRef.nativeElement.querySelector(".ck-sticky-panel__content")
-		toolBar.style.visibility = '';
 		this.editorWordCount.nativeElement.style.visibility = '';
 		this.onFocus.emit(true);
 	}
 
 	editorBlur(){
-		let ckeditor: any = this.ckeditor;
-		let toolBar = ckeditor.elementRef.nativeElement.querySelector(".ck-sticky-panel__content")
-		//toolBar.style.visibility = 'hidden';
 		this.editorWordCount.nativeElement.style.visibility = 'hidden';
 	}
 
