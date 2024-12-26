@@ -35,4 +35,8 @@ export class NavbarComponent {
   open(){
     this.nonote?.openFileDialog();
   }
+
+  deleteNote(){
+    this.nonote?.deleteCurrentNote();
+  }
 }
