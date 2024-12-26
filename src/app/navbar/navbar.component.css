@@ -1,0 +1,19 @@
+.nav-item{
+    margin-right: 20px;
+}
+
+.nav-item button{
+    color: gray;
+}
+
+.navbar-brand{
+    color: gray;
+    margin-left: 20px;
+}
+
+.saving-status{
+    color: gray;
+    position: absolute;
+    top: 30%;
+    left:8%
+}

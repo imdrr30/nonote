@@ -14,8 +14,9 @@ import * as CryptoJS from 'crypto-js';
 export class NonoteComponent implements OnInit {
 
   notes: any = []
-  passwordProtected: boolean = false;
+  public passwordProtected: boolean = false;
   password: string = ""
+  savingStatus = 0;
 
   ENCRYTPED_DATA_KEY = "encryptedData"
   LOCALSTORAGE_KEY = "notes"
@@ -75,6 +76,8 @@ export class NonoteComponent implements OnInit {
 
     }
 
+    this.saveToLocalStorage();
+
   }
 
   checkForEncryption(jsonData: any){
@@ -113,7 +116,9 @@ export class NonoteComponent implements OnInit {
   }
 
   saveToLocalStorage(){
-    return localStorage.setItem(this.LOCALSTORAGE_KEY, this.getNotesJson());
+    this.savingStatus = 1;
+    localStorage.setItem(this.LOCALSTORAGE_KEY, this.getNotesJson());
+    this.savingStatus = 2;
   }
 
   ngOnInit(){
