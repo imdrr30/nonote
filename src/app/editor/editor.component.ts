@@ -91,8 +91,6 @@ export class EditorComponent implements AfterViewInit {
 		this.config = {
 			toolbar: {
 				items: [
-					'heading',
-					'|',
 					'fontSize',
 					'fontFamily',
 					'fontColor',
@@ -119,7 +117,10 @@ export class EditorComponent implements AfterViewInit {
 					'numberedList',
 					'todoList',
 					'outdent',
-					'indent'
+					'indent',
+					'|',
+					'heading',
+					
 				],
 				shouldNotGroupWhenFull: false
 			},
@@ -272,12 +273,9 @@ export class EditorComponent implements AfterViewInit {
 		this.isLayoutReady = true;
 		this.changeDetector.detectChanges();
 
-		setTimeout(() => {
-			if (this.ckeditor) {
-			  
-			}
-		  }, 0);
 	}
+
+
 
 	public onReady(editor: ClassicEditor): void {
 		Array.from(this.editorWordCount.nativeElement.children).forEach(child => child.remove());
@@ -295,7 +293,18 @@ export class EditorComponent implements AfterViewInit {
 	}
 
 	editorFocus(){
+		let ckeditor: any = this.ckeditor;
+		let toolBar = ckeditor.elementRef.nativeElement.querySelector(".ck-sticky-panel__content")
+		toolBar.style.visibility = '';
+		this.editorWordCount.nativeElement.style.visibility = '';
 		this.onFocus.emit(true);
+	}
+
+	editorBlur(){
+		let ckeditor: any = this.ckeditor;
+		let toolBar = ckeditor.elementRef.nativeElement.querySelector(".ck-sticky-panel__content")
+		toolBar.style.visibility = 'hidden';
+		this.editorWordCount.nativeElement.style.visibility = 'hidden';
 	}
 
 	removeBalloonPanels(): void {
