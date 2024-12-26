@@ -1,4 +1,4 @@
-<div class="app-nonote" (keydown)="onKeydown($event)" (dblclick)="createNewNote($event)">
+<div class="app-nonote" (keydown)="onKeydown($event)" (click)="singleClick($event)" (dblclick)="createNewNote($event)">
     <div *ngFor="let note of notes" class="nonote" (mousedown)="onMouseDown($event, note)" [ngStyle]="{'left': note.position[0] + 'px', 'top': note.position[1] + 'px'}">
         <app-editor (click)="selectCurrentNote(note.uuid)" [initialData]="note.data" (onFocus)="editorFocused()" (onDataChange)="onDataChange($event, note)"></app-editor>
     </div>

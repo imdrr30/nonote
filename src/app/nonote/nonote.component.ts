@@ -187,6 +187,13 @@ export class NonoteComponent implements OnInit {
     this.saveToLocalStorage();
   };
 
+  singleClick(event: MouseEvent){
+    if (event.target !== event.currentTarget) {
+      return;
+    }
+    this.currentNote = "";
+  }
+
   createNewNote(event: MouseEvent){
     if (event.target !== event.currentTarget) {
       return;
