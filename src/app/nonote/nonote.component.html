@@ -1,0 +1,10 @@
+
+<div class="app-nonote" (keydown)="onKeydown($event)" (dblclick)="createNewNote($event)">
+    <div *ngFor="let note of notes" class="nonote" (mousedown)="onMouseDown($event, note)" [ngStyle]="{'left': note.position[0] + 'px', 'top': note.position[1] + 'px'}">
+        <app-editor (click)="selectCurrentNote(note.uuid)" [initialData]="note.data" (onFocus)="editorFocused()" (onDataChange)="onDataChange($event, note)"></app-editor>
+    </div>
+    <div class="default-heading" *ngIf="notes.length == 0" >
+        <h1>Double click to start nonoting...</h1>
+    </div>
+</div>
+<input #fileInput type="file" (change)="onFileSelected($event)" style="display: none;" [accept]="EXTENSION_OF_NONOTE" />
