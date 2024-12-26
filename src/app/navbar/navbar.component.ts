@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { NonoteComponent } from '../nonote/nonote.component';
 import { CommonModule } from '@angular/common';
 declare var bootstrap: any;
@@ -10,18 +10,28 @@ declare var bootstrap: any;
   styleUrl: './navbar.component.css'
 })
 
-export class NavbarComponent {
+export class NavbarComponent implements AfterViewInit {
 
 
   @Input()
   nonote: NonoteComponent | undefined
 
-  ngOnInit(){
-    // Initialize all tooltips on page load
+  @ViewChild("navBar")
+  navBar?: ElementRef
+
+  public theme: string = localStorage.getItem("theme") ?? "light";
+
+  mainKey(): string {
+    return navigator.platform.includes('Mac') ? 'CMD' : 'Ctrl';
+  }
+
+  ngAfterViewInit(): void {
+    this.switchTheme();
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function (tooltipTriggerEl) {
       return new bootstrap.Tooltip(tooltipTriggerEl);
     });
+    console.log(tooltipTriggerList);
   }
 
   save(){
@@ -38,5 +48,16 @@ export class NavbarComponent {
 
   deleteNote(){
     this.nonote?.deleteCurrentNote();
+  }
+
+  toggleTheme(){
+    this.theme = (this.theme=="light")? "dark": "light";
+    localStorage.setItem("theme", this.theme);
+    this.switchTheme();
+  }
+
+  switchTheme(){
+    document.querySelector("html")?.setAttribute("data-bs-theme", this.theme)
+    this.navBar?.nativeElement.setAttribute("class",`navbar navbar-expand-lg navbar-${this.theme} bg-${this.theme} fixed-top`)
   }
 }

@@ -21,12 +21,12 @@
 }
 
 .editor-container_classic-editor .editor-container__editor {
-	min-width: 795px;
-	max-width: 795px;
+	min-width: 300px;
+	max-width: 505px;
 }
 
 .editor_container__word-count .ck-word-count {
-	color: var(--ck-color-text);
+	color: gray;
 	display: flex;
 	height: 30px;
 	gap: var(--ck-spacing-small);

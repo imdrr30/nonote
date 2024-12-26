@@ -1,0 +1,19 @@
+[data-bs-theme=dark]{
+    .ck .ck-toolbar{
+        background-color: #212529;
+    }
+    
+    .ck .ck-button{
+        background: #ffffff00 !important;
+        color: hsl(0, 0%, 80%);
+    }
+
+    .ck.ck-editor__main > .ck-editor__editable {
+        background-color: #212529;
+    }
+}
+
+[data-bs-theme=light]{
+    
+}
+

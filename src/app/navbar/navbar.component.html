@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+<nav #navBar class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Nonote</a>
       <p *ngIf="nonote?.savingStatus==1" class="saving-status">Saving...</p>
@@ -7,25 +7,31 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-            <li *ngIf="nonote?.currentNote" class="nav-item" data-bs-toggle="tooltip">
+            <li *ngIf="nonote?.currentNote" class="nav-item">
                 <button class="btn btn-link" (click)="deleteNote()">
                     <i class="bi bi-trash3"></i>
                 </button>
             </li>
-          <li class="nav-item" data-bs-toggle="tooltip">
+          <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="bottom" [title]="'Save to File ( ' + mainKey() + ' + S )'">
             <button class="btn btn-link" (click)="save()">
                 <i class="bi bi-save"></i>
             </button>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="bottom" [title]="'Password Protect ( ' + mainKey() + ' + Shift + S )'">
             <button class="btn btn-link" (click)="password()">
                 <i *ngIf="nonote?.passwordProtected" class="bi bi-unlock"></i>
                 <i *ngIf="!nonote?.passwordProtected" class="bi bi-lock"></i>
             </button>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="bottom" [title]="'Open file ( ' + mainKey() + ' + O )'">
             <button class="btn btn-link" (click)="open()">
                 <i class="bi bi-folder2-open"></i>
+            </button>
+          </li>
+          <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="bottom" [title]="'Switch theme'">
+            <button class="btn btn-link" (click)="toggleTheme()">
+                <i *ngIf="theme=='light'" class="bi bi-moon"></i>
+                <i *ngIf="theme=='dark'" class="bi bi-sun"></i>
             </button>
           </li>
         </ul>

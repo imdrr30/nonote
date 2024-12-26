@@ -56,7 +56,6 @@ import {
 	Underline,
 	WordCount
 } from 'ckeditor5';
-import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 
 const LICENSE_KEY = 'GPL'; // or <YOUR_LICENSE_KEY>.
@@ -303,7 +302,7 @@ export class EditorComponent implements AfterViewInit {
 	editorBlur(){
 		let ckeditor: any = this.ckeditor;
 		let toolBar = ckeditor.elementRef.nativeElement.querySelector(".ck-sticky-panel__content")
-		toolBar.style.visibility = 'hidden';
+		//toolBar.style.visibility = 'hidden';
 		this.editorWordCount.nativeElement.style.visibility = 'hidden';
 	}
 
