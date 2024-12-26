@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { NonoteComponent } from '../nonote/nonote.component';
 import { CommonModule } from '@angular/common';
-declare var bootstrap: any;
+import { TooltipService } from '../tooltip.service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,6 +18,8 @@ export class NavbarComponent implements AfterViewInit {
 
   @ViewChild("navBar")
   navBar?: ElementRef
+  constructor(private readonly tooltipService: TooltipService) {
+  }
 
   public theme: string = localStorage.getItem("theme") ?? "light";
 
@@ -27,11 +29,7 @@ export class NavbarComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.switchTheme();
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-    console.log(tooltipTriggerList);
+    this.tooltipService.initiatToolTip();
   }
 
   save(){

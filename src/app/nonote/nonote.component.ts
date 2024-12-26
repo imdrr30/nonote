@@ -1,8 +1,10 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { EditorComponent } from "../editor/editor.component";
 import { CommonModule } from '@angular/common';
 import { v4 as uuidv4 } from 'uuid';
 import * as CryptoJS from 'crypto-js';
+import { TooltipService } from '../tooltip.service';
+import { PromptService } from '../prompt.service';
 
 
 @Component({
@@ -11,7 +13,7 @@ import * as CryptoJS from 'crypto-js';
   templateUrl: './nonote.component.html',
   styleUrl: './nonote.component.css'
 })
-export class NonoteComponent implements OnInit {
+export class NonoteComponent implements AfterViewInit {
 
   notes: any = []
   public passwordProtected: boolean = false;
@@ -23,8 +25,8 @@ export class NonoteComponent implements OnInit {
   EXTENSION_OF_NONOTE = ".nonote"
   DEFAULT_DOWNLOAD_FILE_NAME = "notes" + this.EXTENSION_OF_NONOTE
 
-  getAndValidatePassword(encryptedData: any){
-    let password = prompt("This note is Password Protected. Please enter the password: ", "");
+  async getAndValidatePassword(encryptedData: any){
+    let password = await this.promtService.prompt("This note is Password Protected. Please enter the password: ");
     let decryptedString = "";
 
     while(true){
@@ -37,11 +39,11 @@ export class NonoteComponent implements OnInit {
             this.password = password;
             break;
           }else{
-            password = prompt("Invalid Password. Try again: ", "");
+            password = await this.promtService.prompt("Invalid Password. Try again: ");
           }
         }
       }catch(error){
-        password = prompt("Invalid Password. Try again: ", "");
+        password = await this.promtService.prompt("Invalid Password. Try again: ");
       }
     }
 
@@ -49,12 +51,11 @@ export class NonoteComponent implements OnInit {
 
   }
 
-  toggleAndChangePasswordProtection(){
+  async toggleAndChangePasswordProtection(){
 
     if(this.passwordProtected && this.password){
-      let newPassword = prompt(
-        "This note is password protected. Enter new pasword to change. Leave it empty to disable password",
-        ""
+      let newPassword = await this.promtService.prompt(
+        "This note is password protected. Enter new pasword to change. Leave it empty to disable password"
       )
 
       if(newPassword==""){
@@ -65,9 +66,8 @@ export class NonoteComponent implements OnInit {
         this.password = newPassword;
       }
     }else{
-      let newPassword = prompt(
-      "Enter the new password to protect the note with: ",
-      ""
+      let newPassword = await this.promtService.prompt(
+      "Enter the new password to protect the note with: "
       )
       if(newPassword && newPassword!=""){
         this.passwordProtected = true;
@@ -80,18 +80,18 @@ export class NonoteComponent implements OnInit {
 
   }
 
-  checkForEncryption(jsonData: any){
+  async checkForEncryption(jsonData: any){
     let encryptedData = jsonData.hasOwnProperty(this.ENCRYTPED_DATA_KEY) ? jsonData[this.ENCRYTPED_DATA_KEY] : false;
     if(encryptedData){
-      return JSON.parse(this.getAndValidatePassword(encryptedData));
+      return JSON.parse(await this.getAndValidatePassword(encryptedData));
     }
 
     return jsonData;
   }
 
-  readFromLocalStorage(){
+  async readFromLocalStorage(){
     let notes = JSON.parse(localStorage.getItem(this.LOCALSTORAGE_KEY) ?? "[]");
-    return this.checkForEncryption(notes);
+    return await this.checkForEncryption(notes);
   }
 
   getNonEmptyNotes(){
@@ -121,8 +121,8 @@ export class NonoteComponent implements OnInit {
     this.savingStatus = 2;
   }
 
-  ngOnInit(){
-    this.notes = this.readFromLocalStorage();
+  async ngAfterViewInit(){
+    this.notes = await this.readFromLocalStorage();
   }
 
   editorFocused(){
@@ -140,6 +140,8 @@ export class NonoteComponent implements OnInit {
     note.data = event;
     this.saveToLocalStorage();
   }
+
+  constructor(private readonly tooltipService: TooltipService, private readonly promtService: PromptService) {}
 
   // Start dragging
   onMouseDown(event: any, note: any) {
@@ -218,6 +220,7 @@ export class NonoteComponent implements OnInit {
   currentNote: any
   selectCurrentNote(uuid: any){
     this.currentNote = uuid;
+    this.tooltipService.initiatToolTip();
   }
 
   deleteCurrentNote(){
@@ -227,7 +230,7 @@ export class NonoteComponent implements OnInit {
   }
 
   @HostListener('document:keydown', ['$event'])
-  onKeydownHost(event: KeyboardEvent) {
+  async onKeydownHost(event: KeyboardEvent) {
     if ((event.ctrlKey || event.metaKey)) {
       if(event.key === 's'){
         event.preventDefault();
@@ -239,7 +242,7 @@ export class NonoteComponent implements OnInit {
       }
 
       if(event.shiftKey && event.key == 'p'){
-        this.toggleAndChangePasswordProtection();
+        await this.toggleAndChangePasswordProtection();
       }
     }
     
@@ -260,17 +263,17 @@ export class NonoteComponent implements OnInit {
   }
 
   // Handle the file selection and read the .nonote file as JSON
-  onFileSelected(event: Event) {
+  async onFileSelected(event: Event) {
     const fileInput = event.target as HTMLInputElement;
     const file = fileInput?.files?.[0];
 
     if (file && file.name.endsWith('.nonote')) {
       const reader = new FileReader();
-      reader.onload = () => {
+      reader.onload = async () => {
         try {
           const fileContent = reader.result as string;
           const jsonContent = JSON.parse(fileContent);
-          this.notes = this.checkForEncryption(jsonContent);
+          this.notes = await this.checkForEncryption(jsonContent);
           // You can now work with your JSON data here
         } catch (e) {
           console.error('Error reading file as JSON:', e);

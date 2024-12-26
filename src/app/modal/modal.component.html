@@ -1,0 +1,20 @@
+<!-- modal.component.html -->
+<div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="inputModalLabel">Protect</h5>
+          <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>{{ message }}</p>
+          <input type="password" (keydown)="onKeyDown($event)" class="form-control" [(ngModel)]="userInput" placeholder="Enter password">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+          <button type="button" class="btn btn-primary" (click)="submitInput()">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
