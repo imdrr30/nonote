@@ -22,7 +22,7 @@
                 <i class="bi bi-save"></i>
             </button>
           </li>
-          <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="bottom" [title]="'Password Protect ( ' + mainKey() + ' + Shift + S )'">
+          <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="bottom" [title]="'Password Protect ( ' + mainKey() + ' + Shift + P )'">
             <button class="btn btn-link" (click)="password()">
                 <i *ngIf="nonote?.passwordProtected" class="bi bi-unlock"></i>
                 <i *ngIf="!nonote?.passwordProtected" class="bi bi-lock"></i>
