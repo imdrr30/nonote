@@ -1,10 +1,17 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, ViewChild, inject } from '@angular/core';
 import { EditorComponent } from "../editor/editor.component";
-import { CommonModule } from '@angular/common';
+import { CommonModule, AsyncPipe } from '@angular/common';
 import { v4 as uuidv4 } from 'uuid';
 import * as CryptoJS from 'crypto-js';
 import { TooltipService } from '../services/tooltip.service';
 import { PromptService } from '../services/prompt.service';
+import { Firestore, collection, addDoc, getDoc, setDoc, doc } from '@angular/fire/firestore';
+
+interface Note{
+  data: string;
+  uuid: string;
+  position: number[];
+}
 
 
 @Component({
@@ -15,10 +22,14 @@ import { PromptService } from '../services/prompt.service';
 })
 export class NonoteComponent implements AfterViewInit {
 
-  notes: any = []
+  firestore = inject(Firestore);
+  notesCollection = collection(this.firestore, 'notes');
+
+  notes: Note[] = []
   public passwordProtected: boolean = false;
   password: string = ""
   savingStatus = 0;
+  public isSyncingToCloud = false;
 
   ENCRYTPED_DATA_KEY = "encryptedData"
   LOCALSTORAGE_KEY = "notes"
@@ -77,7 +88,7 @@ export class NonoteComponent implements AfterViewInit {
 
     }
 
-    this.saveToLocalStorage();
+    this.saveNotes();
 
   }
 
@@ -105,6 +116,15 @@ export class NonoteComponent implements AfterViewInit {
     return nonEmptyNotes;
   }
 
+  connectToFirestore(){
+    addDoc(collection(this.firestore, 'notes'),{ notes: JSON.parse(this.getNotesJson())}).then((docRef) => {
+      localStorage.setItem('firebaseDocId', docRef.id);
+      this.isSyncingToCloud = true;
+      this.tooltipService.initiatToolTip();
+      history.pushState({}, document.title , "/" + docRef.id);
+    });
+  }
+
   getNotesJson(){
     let json = JSON.stringify(this.getNonEmptyNotes());
     if(this.passwordProtected && this.password !== ""){
@@ -116,16 +136,60 @@ export class NonoteComponent implements AfterViewInit {
     return json
   }
 
-  saveToLocalStorage(){
+  saveNotesFireStore(){
+    let firebaseKey = localStorage.getItem('firebaseDocId');
+    let noteRef = doc(this.firestore, 'notes', firebaseKey ?? "");
+    if(firebaseKey==""){
+      return;
+    }
+    setDoc(noteRef, { notes: JSON.parse(this.getNotesJson())}).then(() => {
+      
+    }).catch((error) => {
+      console.error("Error adding document: ", error);
+    });
+  }
+
+  saveNotes(){
     this.savingStatus = 1;
+    this.saveNotesFireStore();
     localStorage.setItem(this.LOCALSTORAGE_KEY, this.getNotesJson());
     this.savingStatus = 2;
   }
 
-  async ngAfterViewInit(){
-    this.autoFocus=false;
+  async loadFromLocal(){
     this.notes = await this.readFromLocalStorage();
     this.autoFocus=true;
+  }
+
+  async readInitialData(){
+    this.autoFocus=false;
+    let firebaseKey = localStorage.getItem('firebaseDocId') ?? window.location.pathname.substring(1);
+    if(firebaseKey==""){
+      await this.loadFromLocal();
+      return;
+    }
+    if(firebaseKey){
+      let noteRef = doc(this.firestore, 'notes', firebaseKey);
+      getDoc(noteRef).then((doc) => {
+        if (doc.exists()) {
+          let data = doc.data();
+          this.notes = data['notes'];
+          this.autoFocus=true;
+          this.isSyncingToCloud = true;
+          this.tooltipService.initiatToolTip();
+          localStorage.setItem('firebaseDocId', firebaseKey);
+          history.pushState({}, document.title , "/" + firebaseKey);
+        } else {
+          console.log('No such document!');
+        }
+      }).catch((error) => {
+        console.log('Error getting document:', error);
+      });
+    }
+  }
+
+  async ngAfterViewInit(){
+    this.readInitialData();
   }
 
   editorFocused(){
@@ -143,10 +207,12 @@ export class NonoteComponent implements AfterViewInit {
 
   onDataChange(event:any, note:any){
     note.data = event;
-    this.saveToLocalStorage();
+    this.saveNotes();
   }
 
-  constructor(private readonly tooltipService: TooltipService, private readonly promtService: PromptService) {}
+  constructor(private readonly tooltipService: TooltipService, private readonly promtService: PromptService) {
+    
+  }
 
   // Start dragging
   onMouseDown(event: any, note: any) {
@@ -192,7 +258,7 @@ export class NonoteComponent implements AfterViewInit {
     this.isDragging = false;
     document.removeEventListener('mousemove', this.onMouseMove);
     document.removeEventListener('mouseup', this.onMouseUp);
-    this.saveToLocalStorage();
+    this.saveNotes();
   };
 
   singleClick(event: MouseEvent){
@@ -231,7 +297,7 @@ export class NonoteComponent implements AfterViewInit {
   deleteCurrentNote(){
     this.notes = this.notes.filter((i: any) => i.uuid !== this.currentNote);
     this.currentNote = "";
-    this.saveToLocalStorage();
+    this.saveNotes();
   }
 
   @HostListener('document:mousemove', ['$event'])

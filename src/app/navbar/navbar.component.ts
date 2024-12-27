@@ -36,6 +36,14 @@ export class NavbarComponent implements AfterViewInit {
     this.nonote?.saveAsJson();
   }
 
+  connectToCloud(){
+    this.nonote?.connectToFirestore();
+  }
+
+  getCloudPath(){
+    return window.location.href;
+  }
+
   password(){
     this.nonote?.toggleAndChangePasswordProtection();
   }
