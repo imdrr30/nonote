@@ -138,10 +138,10 @@ export class NonoteComponent implements AfterViewInit {
 
   saveNotesFireStore(){
     let firebaseKey = localStorage.getItem('firebaseDocId');
-    let noteRef = doc(this.firestore, 'notes', firebaseKey ?? "");
-    if(firebaseKey==""){
+    if(firebaseKey==null || firebaseKey==""){
       return;
     }
+    let noteRef = doc(this.firestore, 'notes', firebaseKey ?? "");
     setDoc(noteRef, { notes: JSON.parse(this.getNotesJson())}).then(() => {
       
     }).catch((error) => {
