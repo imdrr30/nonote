@@ -134,6 +134,8 @@ export class NonoteComponent implements AfterViewInit {
   offsetX = 0;  // Mouse offset relative to the element's top-left corner
   offsetY = 0;  // Mouse offset relative to the element's top-left corner
   dragNote: any;
+  cursorX = 0;
+  cursorY = 0;
   @ViewChild('fileInput') fileInput: ElementRef | undefined;
 
   onDataChange(event:any, note:any){
@@ -230,6 +232,12 @@ export class NonoteComponent implements AfterViewInit {
     this.saveToLocalStorage();
   }
 
+  @HostListener('document:mousemove', ['$event'])
+  async onMouseMoveHost(event: MouseEvent) {
+    this.cursorX = event.pageX;
+    this.cursorY = event.pageY;
+  }
+
   @HostListener('document:keydown', ['$event'])
   async onKeydownHost(event: KeyboardEvent) {
     if ((event.ctrlKey || event.metaKey)) {
@@ -245,6 +253,15 @@ export class NonoteComponent implements AfterViewInit {
       if(event.shiftKey && event.key == 'p'){
         await this.toggleAndChangePasswordProtection();
       }
+    }
+
+    if(this.currentNote=="" && event.key === 'n'){
+      this.createNewNote(
+        {
+          pageX: this.cursorX,
+          pageY: this.cursorY
+        } as MouseEvent
+      )
     }
     
   }
