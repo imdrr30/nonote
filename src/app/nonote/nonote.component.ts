@@ -24,6 +24,7 @@ export class NonoteComponent implements AfterViewInit {
   LOCALSTORAGE_KEY = "notes"
   EXTENSION_OF_NONOTE = ".nonote"
   DEFAULT_DOWNLOAD_FILE_NAME = "notes" + this.EXTENSION_OF_NONOTE
+  autoFocus = false;
 
   async getAndValidatePassword(encryptedData: any){
     let password = await this.promtService.prompt("This note is Password Protected. Please enter the password: ");
@@ -85,7 +86,7 @@ export class NonoteComponent implements AfterViewInit {
     if(encryptedData){
       return JSON.parse(await this.getAndValidatePassword(encryptedData));
     }
-
+    
     return jsonData;
   }
 
@@ -122,7 +123,9 @@ export class NonoteComponent implements AfterViewInit {
   }
 
   async ngAfterViewInit(){
+    this.autoFocus=false;
     this.notes = await this.readFromLocalStorage();
+    this.autoFocus=true;
   }
 
   editorFocused(){
@@ -223,7 +226,6 @@ export class NonoteComponent implements AfterViewInit {
   currentNote: any
   selectCurrentNote(uuid: any){
     this.currentNote = uuid;
-    this.tooltipService.initiatToolTip();
   }
 
   deleteCurrentNote(){
@@ -291,7 +293,9 @@ export class NonoteComponent implements AfterViewInit {
         try {
           const fileContent = reader.result as string;
           const jsonContent = JSON.parse(fileContent);
+          this.autoFocus = false;
           this.notes = await this.checkForEncryption(jsonContent);
+          this.autoFocus = true;
           // You can now work with your JSON data here
         } catch (e) {
           console.error('Error reading file as JSON:', e);

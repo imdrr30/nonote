@@ -2,3 +2,13 @@
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 @import "../node_modules/bootstrap-icons/font/bootstrap-icons.css";
 @import "dark.css";
+
+[data-note-active=false] {
+    .ck .ck-sticky-panel{
+        visibility: hidden;
+    }
+}
+
+.editor_container__word-count[data-note-active=false]{
+    visibility: hidden;
+}

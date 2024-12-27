@@ -76,6 +76,12 @@ export class EditorComponent implements AfterViewInit {
 	@Input()
 	initialData: string | undefined
 
+	@Input()
+	isCurrentNote: boolean = false;
+
+	@Input()
+	autoFocus: boolean = false;
+
 	@Output()
 	onDataChange: EventEmitter<string> = new EventEmitter(); 
 
@@ -282,22 +288,23 @@ export class EditorComponent implements AfterViewInit {
 		const wordCount = editor.plugins.get('WordCount');
 		this.editorWordCount.nativeElement.appendChild(wordCount.wordCountContainer);
 		
-		editor.focus();
+		if(this.autoFocus){
+			editor.focus();
+		}
 		this.removeBalloonPanels();
 	}
 
 	onEditorChange(event: any){
-		let message = event.editor.getData();
+		let message = event.editor.getData('html');
 		this.onDataChange.emit(this.initialData);
 	}
 
 	editorFocus(){
-		this.editorWordCount.nativeElement.style.visibility = '';
 		this.onFocus.emit(true);
 	}
 
 	editorBlur(){
-		this.editorWordCount.nativeElement.style.visibility = 'hidden';
+		console.log('editor blur');
 	}
 
 	removeBalloonPanels(): void {

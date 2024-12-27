@@ -7,7 +7,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-            <li *ngIf="nonote?.currentNote" class="nav-item">
+            <li [style]="{display: nonote?.currentNote ?'': 'none' }" class="nav-item" data-bs-toggle="tooltip" data-bs-placement="bottom" [title]="'Delete Node (Shift + Delete)'">
                 <button class="btn btn-link" (click)="deleteNote()">
                     <i class="bi bi-trash3"></i>
                 </button>
