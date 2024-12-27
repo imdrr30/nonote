@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { NonoteComponent } from '../nonote/nonote.component';
 import { CommonModule } from '@angular/common';
-import { TooltipService } from '../tooltip.service';
+import { TooltipService } from '../services/tooltip.service';
 
 @Component({
   selector: 'app-navbar',

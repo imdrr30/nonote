@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { PromptService } from '../prompt.service';
+import { PromptService } from '../services/prompt.service';
 declare var bootstrap: any;
 
 @Component({

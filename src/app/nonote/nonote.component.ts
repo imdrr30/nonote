@@ -3,8 +3,8 @@ import { EditorComponent } from "../editor/editor.component";
 import { CommonModule } from '@angular/common';
 import { v4 as uuidv4 } from 'uuid';
 import * as CryptoJS from 'crypto-js';
-import { TooltipService } from '../tooltip.service';
-import { PromptService } from '../prompt.service';
+import { TooltipService } from '../services/tooltip.service';
+import { PromptService } from '../services/prompt.service';
 
 
 @Component({
