@@ -12,3 +12,11 @@
 .editor_container__word-count[data-note-active=false]{
     visibility: hidden;
 }
+
+.ck ck-balloon-panel{
+    display: none !important;
+}
+
+.ck-balloon-panel_visible{
+    display: none !important;
+}

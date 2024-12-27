@@ -15,6 +15,10 @@
     .move-btn{
         background-color: rgba(240, 248, 255, 0.127);
     }
+
+    .ck .ck-editor__editable .ck-focused :not(.ck-editor__nested-editable){
+        border: 1px solid white;
+    }
 }
 
 [data-bs-theme=light]{

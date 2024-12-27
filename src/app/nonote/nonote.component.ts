@@ -277,7 +277,7 @@ export class NonoteComponent implements AfterViewInit {
     const y = event.pageY;
 
     let note = {
-      data: "",
+      data: "<p>Hello</p>",
       uuid: uuidv4(),
       position: [x-30,y-75]
     }

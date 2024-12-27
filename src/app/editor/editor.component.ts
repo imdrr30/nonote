@@ -36,10 +36,8 @@ import {
 	LinkImage,
 	List,
 	ListProperties,
-	Markdown,
 	MediaEmbed,
 	Paragraph,
-	PasteFromMarkdownExperimental,
 	PasteFromOffice,
 	RemoveFormat,
 	SpecialCharacters,
@@ -69,9 +67,9 @@ const LICENSE_KEY = 'GPL'; // or <YOUR_LICENSE_KEY>.
 })
 export class EditorComponent implements AfterViewInit {
 
-  @ViewChild('editorWordCountElement') private editorWordCount!: ElementRef<HTMLDivElement>;
+  @ViewChild('editorWordCountElement') private readonly editorWordCount!: ElementRef<HTMLDivElement>;
 
-	constructor(private changeDetector: ChangeDetectorRef) {}
+	constructor(private readonly changeDetector: ChangeDetectorRef) {}
 
 	@Input()
 	initialData: string | undefined
@@ -162,10 +160,8 @@ export class EditorComponent implements AfterViewInit {
 				LinkImage,
 				List,
 				ListProperties,
-				Markdown,
 				MediaEmbed,
 				Paragraph,
-				PasteFromMarkdownExperimental,
 				PasteFromOffice,
 				RemoveFormat,
 				SpecialCharacters,
@@ -291,7 +287,6 @@ export class EditorComponent implements AfterViewInit {
 		if(this.autoFocus){
 			editor.focus();
 		}
-		this.removeBalloonPanels();
 	}
 
 	onEditorChange(event: any){
