@@ -170,10 +170,10 @@ export class NonoteComponent implements AfterViewInit {
     }
     if(firebaseKey){
       let noteRef = doc(this.firestore, 'notes', firebaseKey);
-      getDoc(noteRef).then((doc) => {
+      getDoc(noteRef).then(async (doc) => {
         if (doc.exists()) {
           let data = doc.data();
-          this.notes = data['notes'];
+          this.notes = await this.checkForEncryption(data['notes']);
           this.autoFocus=true;
           this.isSyncingToCloud = true;
           this.tooltipService.initiatToolTip();
