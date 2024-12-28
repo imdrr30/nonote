@@ -17,5 +17,12 @@
     top:45%;
     left: 33%;
     pointer-events: none;
+    text-align: center;
     color: rgb(110, 111, 112);
 }
+
+@media (max-width: 600px) {
+    .default-heading{
+        left: 8%;
+    }
+  }
