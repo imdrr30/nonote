@@ -261,6 +261,23 @@ export class NonoteComponent implements AfterViewInit {
     this.saveNotes();
   };
 
+  onTouchStart(event: TouchEvent, note: Note): void {
+    const touch = event.touches[0];
+    this.isDragging = true;
+    this.onMouseDown(touch as any, note)
+  }
+
+  onTouchMove(event: TouchEvent): void {
+    if (!this.isDragging) return;
+    const touch = event.touches[0];
+    this.onMouseMove(touch as any);
+  }
+
+  onTouchEnd(event: TouchEvent): void {
+    this.isDragging = false;
+    this.saveNotes();
+  }
+
   singleClick(event: MouseEvent){
     if (event.target !== event.currentTarget) {
       return;
