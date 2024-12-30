@@ -10,9 +10,15 @@
     (touchmove)="onTouchMove($event)"
     (touchend)="onTouchEnd($event)"
     [ngStyle]="{'left': note.position[0] + 'px', 'top': note.position[1] + 'px'}"
-    
     >
-        <app-editor (click)="selectCurrentNote(note.uuid)" [autoFocus]="autoFocus" [isCurrentNote]="currentNote == note.uuid" [initialData]="note.data" (onFocus)="editorFocused()" (onDataChange)="onDataChange($event, note)"></app-editor>
+        <app-editor
+        (click)="selectCurrentNote(note.uuid)"
+        [autoFocus]="autoFocus"
+        [isCurrentNote]="currentNote == note.uuid"
+        [initialData]="note.data"
+        (onFocus)="editorFocused()"
+        (onDataChange)="onDataChange($event, note)"
+        ></app-editor>
     </div>
     <div class="default-heading" *ngIf="notes.length == 0" >
         <h1>Double click to start nonoting...</h1>
