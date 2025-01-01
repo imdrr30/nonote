@@ -63,3 +63,8 @@
 	cursor: move;
 	opacity: 1;
 }
+
+.ck.ck-button:not(.ck-disabled):hover,
+a.ck.ck-button:not(.ck-disabled):hover {
+  cursor: pointer;
+}
