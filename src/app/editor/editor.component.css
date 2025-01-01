@@ -20,7 +20,7 @@
 	word-break: break-word;
 }
 
-.editor-container_classic-editor .editor-container__editor {
+.editor-container_classic-editor .editor-container__editor:hover {
 	resize: horizontal;
 	overflow: auto;
 }
