@@ -52,7 +52,8 @@ import {
 	TableToolbar,
 	TodoList,
 	Underline,
-	WordCount
+	WordCount,
+	CodeBlock
 } from 'ckeditor5';
 import { FormsModule } from '@angular/forms';
 
@@ -106,6 +107,7 @@ export class EditorComponent implements AfterViewInit {
 					'subscript',
 					'superscript',
 					'code',
+					'codeBlock',
 					'removeFormat',
 					'|',
 					'specialCharacters',
@@ -176,7 +178,8 @@ export class EditorComponent implements AfterViewInit {
 				TableToolbar,
 				TodoList,
 				Underline,
-				WordCount
+				WordCount,
+				CodeBlock
 			],
 			balloonToolbar: ['bold', 'italic', '|', 'link', 'insertImage', '|', 'bulletedList', 'numberedList'],
 			fontFamily: {
