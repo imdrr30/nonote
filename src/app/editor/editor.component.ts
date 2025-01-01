@@ -330,14 +330,4 @@ export class EditorComponent implements AfterViewInit {
 		console.log('editor blur');
 	}
 
-	removeBalloonPanels(): void {
-		// Select all elements with the class 'ck-balloon-panel'
-		const balloonPanels = document.querySelectorAll('.ck-balloon-panel');
-	
-		// Loop through each element and remove it from the DOM
-		balloonPanels.forEach((panel: Element) => {
-		  panel.remove()
-		});
-	}
-
 }
