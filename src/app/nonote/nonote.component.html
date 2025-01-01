@@ -18,6 +18,7 @@
         [initialData]="note.data"
         (onFocus)="editorFocused()"
         (onDataChange)="onDataChange($event, note)"
+        [(width)]="note.width"
         ></app-editor>
     </div>
     <div class="default-heading" *ngIf="notes.length == 0" >

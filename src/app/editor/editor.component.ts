@@ -68,8 +68,10 @@ const LICENSE_KEY = 'GPL'; // or <YOUR_LICENSE_KEY>.
 })
 export class EditorComponent implements AfterViewInit {
 
-  @ViewChild('editorWordCountElement') private readonly editorWordCount!: ElementRef<HTMLDivElement>;
+    @ViewChild('editorWordCountElement') private readonly editorWordCount!: ElementRef<HTMLDivElement>;
+    @ViewChild('editorDiv') private readonly editorDiv!: ElementRef<HTMLDivElement>;
 
+	private resizeObserver?: ResizeObserver;
 	constructor(private readonly changeDetector: ChangeDetectorRef) {}
 
 	@Input()
@@ -80,6 +82,12 @@ export class EditorComponent implements AfterViewInit {
 
 	@Input()
 	autoFocus: boolean = false;
+
+	@Input()
+	width: number = 555;
+
+	@Output()
+	widthChange: EventEmitter<number> = new EventEmitter();
 
 	@Output()
 	onDataChange: EventEmitter<string> = new EventEmitter(); 
@@ -275,9 +283,28 @@ export class EditorComponent implements AfterViewInit {
 
 		this.isLayoutReady = true;
 		this.changeDetector.detectChanges();
+		this.enableResizeObserver();
+	}
+
+	enableResizeObserver(): void {
+		this.resizeObserver = new ResizeObserver(entries => {
+			entries.forEach(entry => {
+			  if (entry.contentRect.width) {
+				this.widthChange.emit(entry.contentRect.width);
+			  }
+			});
+		});
+
+		this.resizeObserver.observe(this.editorDiv.nativeElement);
 
 	}
 
+	ngOnDestroy(): void {
+		// Clean up observer when component is destroyed
+		if (this.resizeObserver) {
+		  this.resizeObserver.disconnect();
+		}
+	}
 
 
 	public onReady(editor: ClassicEditor): void {

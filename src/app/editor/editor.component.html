@@ -1,7 +1,7 @@
 <div class="main-container justify-content-center">
 	<button class="btn btn-link move-btn"><i class="bi bi-arrows-move"></i></button>
 	<div class="editor-container editor-container_classic-editor editor-container_include-word-count" #editorContainerElement>
-		<div class="editor-container__editor">
+		<div #editorDiv class="editor-container__editor" [ngStyle]="{ 'width': width + 'px' }">
 			<div #editorElement>
 				<ckeditor #ckeditor [attr.data-note-active]="isCurrentNote" [(ngModel)]="initialData" [editor]="Editor" [config]="config" (ready)="onReady($event)" (change)="onEditorChange($event)" (blur)="editorBlur()" (focus)="editorFocus()" *ngIf="isLayoutReady" />
 			</div>

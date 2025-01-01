@@ -11,6 +11,7 @@ interface Note{
   data: string;
   uuid: string;
   position: number[];
+  width: number;
 }
 
 
@@ -296,7 +297,8 @@ export class NonoteComponent implements AfterViewInit {
     let note = {
       data: "",
       uuid: uuidv4(),
-      position: [x-30,y-75]
+      position: [x-30,y-75],
+      width: 555
     }
 
     this.notes.push(note)

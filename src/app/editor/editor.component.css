@@ -21,8 +21,8 @@
 }
 
 .editor-container_classic-editor .editor-container__editor {
-	min-width: 300px;
-	max-width: 555px;
+	resize: horizontal;
+	overflow: auto;
 }
 
 .editor_container__word-count .ck-word-count {
