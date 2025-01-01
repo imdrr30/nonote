@@ -319,7 +319,6 @@ export class EditorComponent implements AfterViewInit {
 	}
 
 	onEditorChange(event: any){
-		let message = event.editor.getData('html');
 		this.onDataChange.emit(this.initialData);
 	}
 

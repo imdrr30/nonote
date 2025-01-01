@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, HostListener, ViewChild, inject } from '@angular/core';
 import { EditorComponent } from "../editor/editor.component";
-import { CommonModule, AsyncPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { v4 as uuidv4 } from 'uuid';
 import * as CryptoJS from 'crypto-js';
 import { TooltipService } from '../services/tooltip.service';
@@ -228,7 +228,7 @@ export class NonoteComponent implements AfterViewInit {
           || event.target.className.includes("move")
         )
       ){
-
+        console.log("valid click")
       }else{
         return;
       }
@@ -372,7 +372,7 @@ export class NonoteComponent implements AfterViewInit {
     const fileInput = event.target as HTMLInputElement;
     const file = fileInput?.files?.[0];
 
-    if (file && file.name.endsWith('.nonote')) {
+    if (file?.name?.endsWith('.nonote')) {
       const reader = new FileReader();
       reader.onload = async () => {
         try {
