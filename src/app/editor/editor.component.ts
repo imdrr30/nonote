@@ -106,7 +106,6 @@ export class EditorComponent implements AfterViewInit {
 					'strikethrough',
 					'subscript',
 					'superscript',
-					'code',
 					'codeBlock',
 					'removeFormat',
 					'|',

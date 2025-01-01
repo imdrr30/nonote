@@ -19,6 +19,11 @@
     .ck .ck-editor__editable .ck-focused :not(.ck-editor__nested-editable){
         border: 1px solid white;
     }
+
+    .ck-content pre{
+        color: hsl(0deg 0% 86.45%);
+        background-color: hsl(0deg 0% 78% / 10%);
+    }
 }
 
 [data-bs-theme=light]{
