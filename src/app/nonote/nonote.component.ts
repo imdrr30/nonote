@@ -6,6 +6,7 @@ import * as CryptoJS from 'crypto-js';
 import { TooltipService } from '../services/tooltip.service';
 import { PromptService } from '../services/prompt.service';
 import { Firestore, collection, addDoc, getDoc, setDoc, doc } from '@angular/fire/firestore';
+import { generateString } from '../services/random';
 
 interface Note{
   data: string;
@@ -118,12 +119,14 @@ export class NonoteComponent implements AfterViewInit {
   }
 
   connectToFirestore(){
-    addDoc(collection(this.firestore, 'notes'),{ notes: JSON.parse(this.getNotesJson())}).then((docRef) => {
-      localStorage.setItem('firebaseDocId', docRef.id);
+    let id = generateString(6);
+    let noteRef = doc(this.firestore, 'notes', id);
+    setDoc(noteRef, { notes: JSON.parse(this.getNotesJson())}).then(() => {
+      localStorage.setItem('firebaseDocId', id);
       this.isSyncingToCloud = true;
       this.tooltipService.initiatToolTip();
-      history.pushState({}, document.title , "/" + docRef.id);
-    });
+      history.pushState({}, document.title , "/" + id);
+    }).catch((error) => {});
   }
 
   getNotesJson(){
