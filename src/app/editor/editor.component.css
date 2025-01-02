@@ -20,16 +20,6 @@
 	word-break: break-word;
 }
 
-.editor-container_classic-editor .editor-container__editor:hover {
-	resize: horizontal;
-	overflow: auto;
-}
-
-.editor-container_classic-editor .editor-container__editor:active {
-	resize: horizontal;
-	overflow: auto;
-}
-
 .editor_container__word-count .ck-word-count {
 	color: gray;
 	display: flex;
