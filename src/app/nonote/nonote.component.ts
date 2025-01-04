@@ -204,7 +204,7 @@ export class NonoteComponent implements AfterViewInit {
       return;
     }
 
-    if(this.notesHistory.length > 10){
+    if(this.notesHistory.length > 25){
       this.notesHistory.shift();
     }
 
