@@ -323,12 +323,10 @@ export class EditorComponent implements AfterViewInit {
 	}
 
 	editorFocus(){
-		this.editorDiv.nativeElement.querySelector('.ck-editor__editable')?.setAttribute('contenteditable', 'true');
 		this.onFocus.emit(true);
 	}
 
 	editorBlur(){
-		this.editorDiv.nativeElement.querySelector('.ck-editor__editable')?.removeAttribute('contenteditable');
 		this.onFocus.emit(false);
 	}
 
