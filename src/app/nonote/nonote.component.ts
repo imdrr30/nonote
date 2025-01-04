@@ -28,6 +28,7 @@ export class NonoteComponent implements AfterViewInit {
   notesCollection = collection(this.firestore, 'notes');
 
   notes: Note[] = []
+  notesHistory: string[]= []
   public passwordProtected: boolean = false;
   password: string = ""
   savingStatus = 0;
@@ -196,8 +197,26 @@ export class NonoteComponent implements AfterViewInit {
     this.readInitialData();
   }
 
-  editorFocused(){
-    this.isFocused = true;
+  addCurrentNoteToHistory(){
+
+    let currentNotes = JSON.stringify(this.notes);
+    if(this.notesHistory.length>0 && this.notesHistory[this.notesHistory.length-1] == currentNotes){
+      return;
+    }
+
+    if(this.notesHistory.length > 10){
+      this.notesHistory.shift();
+    }
+
+    this.notesHistory.push(currentNotes);
+    
+  }
+
+  editorFocused(isFocused: boolean){
+    this.isFocused = isFocused;
+    if(!this.isFocused){
+      this.addCurrentNoteToHistory();
+    }
   }
 
   isFocused = false;
@@ -262,6 +281,7 @@ export class NonoteComponent implements AfterViewInit {
     this.isDragging = false;
     document.removeEventListener('mousemove', this.onMouseMove);
     document.removeEventListener('mouseup', this.onMouseUp);
+    this.addCurrentNoteToHistory();
     this.saveNotes();
   };
 
@@ -319,7 +339,16 @@ export class NonoteComponent implements AfterViewInit {
   deleteCurrentNote(){
     this.notes = this.notes.filter((i: any) => i.uuid !== this.currentNote);
     this.currentNote = "";
+    this.addCurrentNoteToHistory();
     this.saveNotes();
+  }
+
+  undoNote(){
+    if(this.notesHistory.length>0){
+      this.notesHistory.pop();
+      this.notes = JSON.parse( this.notesHistory[this.notesHistory.length-1] ?? "[]");
+      this.saveNotes();
+    }
   }
 
   @HostListener('document:mousemove', ['$event'])
@@ -342,6 +371,10 @@ export class NonoteComponent implements AfterViewInit {
 
       if(event.shiftKey && event.key == 'p'){
         await this.toggleAndChangePasswordProtection();
+      }
+
+      if(this.currentNote=="" && event.key === 'z'){
+        this.undoNote();
       }
     }
 

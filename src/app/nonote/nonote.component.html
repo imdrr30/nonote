@@ -16,7 +16,7 @@
         [autoFocus]="autoFocus"
         [isCurrentNote]="currentNote == note.uuid"
         [initialData]="note.data"
-        (onFocus)="editorFocused()"
+        (onFocus)="editorFocused($event)"
         (onDataChange)="onDataChange($event, note)"
         [(width)]="note.width"
         ></app-editor>
