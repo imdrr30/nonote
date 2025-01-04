@@ -25,4 +25,5 @@
         <h1>Double click to start nonoting...</h1>
     </div>
 </div>
+<app-files [(files)]="files"></app-files>
 <input #fileInput type="file" (change)="onFileSelected($event)" style="display: none;" [accept]="EXTENSION_OF_NONOTE" />

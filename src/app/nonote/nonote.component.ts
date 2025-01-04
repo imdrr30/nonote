@@ -7,6 +7,7 @@ import { TooltipService } from '../services/tooltip.service';
 import { PromptService } from '../services/prompt.service';
 import { Firestore, collection, addDoc, getDoc, setDoc, doc } from '@angular/fire/firestore';
 import { generateString } from '../services/random';
+import { FilesComponent, NonoteFile } from "../files/files.component";
 
 interface Note{
   data: string;
@@ -18,7 +19,7 @@ interface Note{
 
 @Component({
   selector: 'app-nonote',
-  imports: [EditorComponent, CommonModule],
+  imports: [EditorComponent, CommonModule, FilesComponent],
   templateUrl: './nonote.component.html',
   styleUrl: './nonote.component.css'
 })
@@ -29,6 +30,7 @@ export class NonoteComponent implements AfterViewInit {
 
   notes: Note[] = []
   notesHistory: string[]= []
+  files: NonoteFile[] = []
   public passwordProtected: boolean = false;
   password: string = ""
   savingStatus = 0;
@@ -147,7 +149,11 @@ export class NonoteComponent implements AfterViewInit {
       return;
     }
     let noteRef = doc(this.firestore, 'notes', firebaseKey ?? "");
-    setDoc(noteRef, { notes: JSON.parse(this.getNotesJson())}).then(() => {
+    setDoc(noteRef, { 
+      notes: JSON.parse(this.getNotesJson()),
+      lastUpdated: new Date(),
+      files: this.files
+    }).then(() => {
       
     }).catch((error) => {
       console.error("Error adding document: ", error);
